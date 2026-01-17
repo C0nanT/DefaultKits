@@ -1,22 +1,11 @@
-# LifeIndicator
+# DefaultKits
 
-Mod para Hytale que mostra a vida dos animais e mobs quando você olha para eles.
+Sistema de kits para servidor Hytale. O objetivo é oferecer comandos de kits que configuram o estilo de jogo do jogador (itens, bônus e comportamentos específicos).
 
-## Funcionalidades
-
-- Exibe uma barra de vida acima da cabeça da entidade quando o jogador olha para ela
-- Atualiza automaticamente conforme a vida muda
-- Remove o indicador quando o jogador olha para outro lugar
-- Alcance de detecção: 30 blocos
-
-## Como funciona
-
-```
-[|||||||||||||||]  100% vida
-[||||||||||||   ]  80% vida
-[|||||||        ]  50% vida
-[|||            ]  20% vida
-```
+Atualmente, está em desenvolvimento o kit "archer" (arqueiro):
+- Comando `/kit archer` entrega arco, flechas e equipamentos leves
+- Dano de arco/flecha é aumentado somente para jogadores com o kit archer ativo
+- Recompensa de munição: ao acertar um alvo válido, o jogador com kit archer recebe +2 flechas
 
 ## Instalação
 
@@ -25,7 +14,7 @@ Mod para Hytale que mostra a vida dos animais e mobs quando você olha para eles
    ./gradlew build
    ```
 
-2. Copie o arquivo `build/libs/LifeIndicator-1.0.0.jar` para a pasta `mods` do servidor Hytale
+2. Copie o arquivo gerado em `build/libs/DefaultKits-*.jar` para a pasta `mods` do servidor Hytale
 
 3. Reinicie o servidor
 
@@ -34,28 +23,28 @@ Mod para Hytale que mostra a vida dos animais e mobs quando você olha para eles
 - Java 21
 - Hytale Server
 
-## Estrutura do Projeto
+## Estrutura (parcial)
 
 ```
 src/main/java/com/example/plugin/
-├── LifeIndicator.java      # Classe principal do plugin
-└── LifeIndicatorTask.java  # Tarefa que detecta entidades e mostra vida
+├── DefaultKits.java                      # Classe principal do plugin
+├── commands/KitCommand.java              # Comando /kit
+├── kit/KitManager.java                   # Estado dos kits ativos por jogador
+└── listeners/
+    ├── ArrowDamageMultiplier.java        # Multiplica dano de arco (somente kit archer)
+    └── ArrowAmmoRewardListener.java      # Dá +2 flechas em acerto (somente kit archer)
 ```
 
-## Configuração
+## Uso
 
-| Parâmetro | Valor | Descrição |
-|-----------|-------|-----------|
-| MAX_DISTANCE | 30.0 | Distância máxima de detecção (blocos) |
-| MIN_DOT_PRODUCT | 0.9 | Precisão do olhar (0.9 = ~25 graus) |
-| Intervalo | 200ms | Frequência de atualização |
+- Jogador entra no servidor: dano normal de arco/flecha
+- Jogador executa `/kit archer`: passa a causar dano aumentado com arco/flecha e ganhar flechas ao acertar
 
-## API Utilizada
+## Roadmap
 
-- `Nameplate` - Componente para mostrar texto acima de entidades
-- `EntityStatMap` - Acesso aos stats das entidades (vida, etc)
-- `HeadRotation` - Direção do olhar do jogador
-- `TransformComponent` - Posição das entidades
+- Novos kits (warrior, mage) com efeitos específicos
+- Persistência de estado de kits entre reinícios
+- Comando para limpar kit ativo (ex.: `/kit reset`)
 
 ## Licença
 
