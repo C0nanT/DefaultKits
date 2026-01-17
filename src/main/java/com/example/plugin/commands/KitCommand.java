@@ -1,5 +1,6 @@
 package com.example.plugin.commands;
 
+import com.example.plugin.kit.KitManager;
 import com.example.plugin.kit.KitItem;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -84,6 +85,11 @@ public class KitCommand extends AbstractPlayerCommand {
             player.getInventory().getCombinedHotbarFirst().addItemStack(
                 new ItemStack(item.getItemId(), item.getQuantity(), null)
             );
+        }
+
+        // Marca o jogador com o kit ativo (apenas archer por enquanto)
+        if ("archer".equals(kitName)) {
+            KitManager.getInstance().setArcherKit(player);
         }
 
         context.sendMessage(MESSAGE_KIT_RECEIVED.param("kit", kitName));

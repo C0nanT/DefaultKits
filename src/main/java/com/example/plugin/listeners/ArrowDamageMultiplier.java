@@ -1,5 +1,6 @@
 package com.example.plugin.listeners;
 
+import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
@@ -61,6 +62,12 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
         Player shooter = ArrowEventValidator.validateArrowHitEvent(damage, commandBuffer);
         if (shooter == null) {
             log("Evento de arco inválido ou não é jogador");
+            return;
+        }
+
+        // Aplica apenas se o jogador tiver kit archer ativo
+        if (!KitManager.getInstance().hasArcherKit(shooter)) {
+            // Sem kit archer, dano normal
             return;
         }
 

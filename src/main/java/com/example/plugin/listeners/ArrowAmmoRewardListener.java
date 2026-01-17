@@ -1,5 +1,6 @@
 package com.example.plugin.listeners;
 
+import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
@@ -66,6 +67,11 @@ public class ArrowAmmoRewardListener extends DamageEventSystem {
             return;
         }
 
+        // Recompensa apenas se o jogador tiver kit archer ativo
+        if (!KitManager.getInstance().hasArcherKit(shooter)) {
+            return;
+        }
+
         // Verifica se o alvo eh uma entidade viva (animal/monstro/player)
         Entity targetEntity = EntityUtils.getEntity(index, archetypeChunk);
         if (!ArrowEventValidator.isLivingEntity(targetEntity)) {
@@ -82,6 +88,6 @@ public class ArrowAmmoRewardListener extends DamageEventSystem {
 
         ItemStack arrows = new ItemStack(ARROW_ITEM_ID, ARROWS_TO_GIVE, null);
         inventory.getCombinedHotbarFirst().addItemStack(arrows);
-        log("Sucesso! +" + ARROWS_TO_GIVE + " flechas dadas ao jogador");
+        log("Sucesso! +" + ARROWS_TO_GIVE + " flechas dadas ao jogador (kit archer)");
     }
 }
