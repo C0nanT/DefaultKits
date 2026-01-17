@@ -21,10 +21,7 @@ dependencies {
 
 jar {
     archiveBaseName = 'DefaultKits'
-    // Produce a fixed filename to ensure overwrite on rebuild
     archiveFileName = 'DefaultKits.jar'
-    // No CI: coloca na pasta anterior para usar no servidor
-    // Em CI (GitHub Actions): usa a pasta build/libs/ padrão
     destinationDirectory = file(System.getenv('CI') ? "$buildDir/libs" : "$rootDir/..")
 
     manifest {
