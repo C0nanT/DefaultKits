@@ -68,13 +68,11 @@ public class ArrowHitListener extends DamageEventSystem {
             log("Dano não é de projétil, causa: " + (cause != null ? cause.getId() : "null"));
             return;
         }
-        log("Dano de projétil confirmado, causa: " + cause.getId());
 
         if (!(damage.getSource() instanceof Damage.EntitySource)) {
             log("Dano não é de entidade, tipo recebido: " + (damage.getSource() != null ? damage.getSource().getClass().getSimpleName() : "null"));
             return;
         }
-        log("Dano de entidade, tipo recebido: " + damage.getSource().getClass().getSimpleName());
 
         // EntitySource funciona para ambos os casos (arco e flecha jogada)
         // porque ProjectileSource estende EntitySource
