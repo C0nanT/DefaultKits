@@ -1,6 +1,7 @@
 package com.example.plugin;
 
 import com.example.plugin.commands.KitCommand;
+import com.example.plugin.listeners.ArrowHitListener;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 
@@ -15,5 +16,6 @@ public class DefaultKits extends JavaPlugin {
     public void setup() {
         super.setup();
         getCommandRegistry().registerCommand(new KitCommand());
+        getEntityStoreRegistry().registerSystem(new ArrowHitListener());
     }
 }
