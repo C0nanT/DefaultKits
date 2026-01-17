@@ -9,14 +9,36 @@ Atualmente, está em desenvolvimento o kit "archer" (arqueiro):
 
 ## Instalação
 
-1. Compile o projeto:
+### Opção 1: Download da Release (Recomendado)
+
+1. Vá para a aba [Releases](../../releases) do repositório
+2. Baixe o arquivo `DefaultKits.jar` da versão mais recente
+3. Copie para a pasta `mods` do servidor Hytale
+4. Reinicie o servidor
+
+### Opção 2: Compilar localmente
+
+1. Clone o repositório e entre na pasta:
+   ```bash
+   git clone <seu-repositorio>
+   cd DefaultKits
+   ```
+
+2. Compile o projeto:
    ```bash
    ./gradlew build
    ```
 
-2. Copie o arquivo gerado em `build/libs/DefaultKits-*.jar` para a pasta `mods` do servidor Hytale
+3. Copie o arquivo `build/libs/DefaultKits.jar` para a pasta `mods` do servidor Hytale
 
-3. Reinicie o servidor
+4. Reinicie o servidor
+
+## CI/CD
+
+Este projeto possui **integração contínua automática** com GitHub Actions:
+- A cada push na branch `main`, o projeto é compilado automaticamente
+- Um arquivo `.jar` é gerado e disponibilizado nas **Releases** do GitHub
+- Você nunca precisa compilar manualmente para colocar em produção
 
 ## Requisitos
 
@@ -45,6 +67,13 @@ src/main/java/com/example/plugin/
 - Novos kits (warrior, mage) com efeitos específicos
 - Persistência de estado de kits entre reinícios
 - Comando para limpar kit ativo (ex.: `/kit reset`)
+
+## Contribuindo
+
+1. Faça um fork e crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
+2. Commit suas mudanças (`git commit -m 'Add MinhaFeature'`)
+3. Push para a branch (`git push origin feature/MinhaFeature`)
+4. Abra um Pull Request
 
 ## Licença
 
