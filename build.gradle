@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.example.plugin'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // HytaleServer API
+    compileOnly files('libs/HytaleServer.jar')
+}
+
+jar {
+    archiveBaseName = 'DefaultKits'
+    // Produce a fixed filename to ensure overwrite on rebuild
+    archiveFileName = 'DefaultKits.jar'
+    destinationDirectory = file("$rootDir/..")
+
+    manifest {
+        attributes(
+            'Implementation-Title': 'DefaultKits',
+            'Implementation-Version': version
+        )
+    }
+}
+
+// Ensure `clean` also removes the external jar placed in the parent directory
+tasks.register('cleanExternalJar', Delete) {
+    delete file("$rootDir/../DefaultKits.jar")
+}
+
+tasks.named('clean') {
+    dependsOn 'cleanExternalJar'
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
