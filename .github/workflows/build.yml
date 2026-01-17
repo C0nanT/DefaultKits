@@ -23,20 +23,21 @@ jobs:
 
     - name: Build with Gradle
       run: ./gradlew build
+      env:
+        CI: 'true'
 
     - name: Upload JAR artifact
       uses: actions/upload-artifact@v4
       with:
         name: DefaultKits-jar
-        path: ../DefaultKits.jar
+        path: build/libs/DefaultKits.jar
         retention-days: 30
 
     - name: Create Release
       if: success()
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "../DefaultKits.jar"
+        artifacts: "build/libs/DefaultKits.jar"
         tag: v${{ github.run_number }}
-        bodyFile: "CHANGELOG.md"
         token: ${{ secrets.GITHUB_TOKEN }}
       continue-on-error: true
