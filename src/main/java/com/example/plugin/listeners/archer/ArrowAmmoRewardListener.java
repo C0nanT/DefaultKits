@@ -1,4 +1,4 @@
-package com.example.plugin.listeners;
+package com.example.plugin.listeners.archer;
 
 import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;

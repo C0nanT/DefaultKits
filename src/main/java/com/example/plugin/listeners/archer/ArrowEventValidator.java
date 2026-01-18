@@ -1,4 +1,4 @@
-package com.example.plugin.listeners;
+package com.example.plugin.listeners.archer;
 
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
