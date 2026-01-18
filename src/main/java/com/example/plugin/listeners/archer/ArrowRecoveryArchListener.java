@@ -1,4 +1,4 @@
-package com.example.plugin.listeners;
+package com.example.plugin.listeners.archer;
 
 import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -10,6 +10,8 @@ import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.server.core.entity.Entity;
 import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.inventory.Inventory;
+import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.entity.AllLegacyLivingEntityTypesQuery;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageEventSystem;
@@ -21,19 +23,20 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Sistema que aumenta o dano de arco e flecha para jogadores.
- * Modifica o dano durante a fase FILTER (antes da aplicação final).
+ * Sistema que recompensa durabilidade do arco quando jogador acerta com arco.
+ * Quando um jogador acerta um animal/monstro/player com flecha, ganha +2 de durabilidade no arco.
  */
-public class ArrowDamageMultiplier extends DamageEventSystem {
+public class ArrowRecoveryArchListener extends DamageEventSystem {
 
-    private static final boolean DEBUG_ENABLED = false; // Trocar para true para debug
-    
-    // Multiplicador de dano: 2.0f = dano dobrado, 1.5f = 50% mais dano
-    private static final float DAMAGE_MULTIPLIER = 1.5f;
+    private static final boolean DEBUG_ENABLED = true;
+
+    private static final int RECOVERY = 1;
+    private static final String ARCH_ITEM_START = "Weapon_Shortbow_";
+
 
     private void log(String message) {
         if (DEBUG_ENABLED) {
-            System.out.println("[ArrowDamageMultiplier] " + message);
+            System.out.println("[ArrowAmmoRewardListener] " + message);
         }
     }
 
@@ -43,9 +46,7 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
     @Override
     @Nullable
     public SystemGroup<EntityStore> getGroup() {
-        // IMPORTANTE: Usar filterDamageGroup para modificar dano
-        // Isso executa ANTES de aplicar o dano final
-        return DamageModule.get().getFilterDamageGroup();
+        return DamageModule.get().getInspectDamageGroup();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
         // Valida se é um evento de arco/flecha de um jogador
         Player shooter = ArrowEventValidator.validateArrowHitEvent(damage, commandBuffer);
         if (shooter == null) {
-            log("Evento de arco inválido ou não é jogador");
+            log("Evento de arco invalido ou nao é jogador");
             return;
         }
 
@@ -85,17 +86,49 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
             return;
         }
 
-        // Aplica apenas se o jogador tiver kit archer ativo
+        // Recompensa apenas se o jogador tiver kit archer ativo
         if (!KitManager.getInstance().hasArcherKit(playerRef)) {
-            // Sem kit archer, dano normal
             return;
         }
 
-        // Aplica o multiplicador de dano
-        float currentDamage = damage.getAmount();
-        float newDamage = currentDamage * DAMAGE_MULTIPLIER;
-        damage.setAmount(newDamage);
+        // Verifica se o alvo é uma entidade viva (animal/monstro/player)
+        Entity targetEntity = EntityUtils.getEntity(index, archetypeChunk);
+        if (!ArrowEventValidator.isLivingEntity(targetEntity)) {
+            log("Alvo nao é LivingEntity, ignorando");
+            return;
+        }
+
+        // Da +2 de durabilidade se o item na mão do usuário for um arco
+        Inventory inventory = shooter.getInventory();
+        if (inventory == null) {
+            log("Inventario é null");
+            return;
+        }
+
+        ItemStack itemInHand = inventory.getItemInHand();
+
+        if (itemInHand == null) {
+            log("Item na mao é null");
+            return;
+        } else if (!itemInHand.getItemId().startsWith(ARCH_ITEM_START)) {
+            log("Item na mao nao é arco");
+            return;
+        }   
+
+        //gera um número aleatórico de 0 até 10
+        int randomRecovery = (int) (Math.random() * 11);
+        log("Numero aleatorio gerado: " + randomRecovery);
+        if(randomRecovery < 7) {
+            log("Recuperacao do arco");
+            return;
+        }
+
+        // Adiciona durabilidade ao arco
+        ItemStack repairedArco = itemInHand.withIncreasedDurability(RECOVERY);
         
-        log("Dano de arco aumentado: " + currentDamage + " -> " + newDamage);
+        // Atualiza o item no inventário
+        inventory.getHotbar().setItemStackForSlot(inventory.getActiveHotbarSlot(), repairedArco);
+        log("Sucesso! +" + RECOVERY + " durabilidade adicionada ao arco");
+
     }
 }
