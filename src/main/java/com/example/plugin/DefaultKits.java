@@ -21,9 +21,5 @@ public class DefaultKits extends JavaPlugin {
         getCommandRegistry().registerCommand(new KitCommand());
         getEntityStoreRegistry().registerSystem(new ArrowDamageMultiplier());
         getEntityStoreRegistry().registerSystem(new ArrowAmmoRewardListener());
-        // Limpa estado de kit quando jogador desconecta
-        getEventRegistry().register(PlayerDisconnectEvent.class, event ->
-            KitManager.getInstance().removePlayer(event.getPlayerRef().getUuid())
-        );
     }
 }
