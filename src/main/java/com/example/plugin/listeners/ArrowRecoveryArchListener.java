@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
- * Sistema que recompensa municao (flechas) quando jogador acerta com arco.
- * Quando um jogador acerta um animal/monstro com flecha, ganha +2 flechas.
+ * Sistema que recompensa durabilidade do arco quando jogador acerta com arco.
+ * Quando um jogador acerta um animal/monstro/player com flecha, ganha +2 de durabilidade no arco.
  */
 public class ArrowRecoveryArchListener extends DamageEventSystem {
 
