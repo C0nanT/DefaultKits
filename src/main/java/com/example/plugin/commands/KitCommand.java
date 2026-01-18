@@ -40,29 +40,37 @@ public class KitCommand extends AbstractPlayerCommand {
         kits.put("archer", List.of(
             new KitItem("Weapon_Shortbow_Crude", 1),
             new KitItem("Weapon_Arrow_Crude", 20),
-            new KitItem("Armor_Cloth_Linen_Head", 1),
-            new KitItem("Armor_Cloth_Linen_Chest", 1),
-            new KitItem("Armor_Cloth_Linen_Legs", 1),
-            new KitItem("Armor_Cloth_Linen_Hands", 1)
+            new KitItem("Armor_Cloth_Linen_Head", 1)
+            // new KitItem("Armor_Cloth_Linen_Chest", 1),
+            // new KitItem("Armor_Cloth_Linen_Legs", 1),
+            // new KitItem("Armor_Cloth_Linen_Hands", 1)
         ));
 
         // Kit Warrior
         kits.put("warrior", List.of(
             new KitItem("Weapon_Sword_Iron", 1),
             new KitItem("Weapon_Shield_Wood", 1),
-            new KitItem("Armor_Iron_Head", 1),
-            new KitItem("Armor_Iron_Chest", 1),
-            new KitItem("Armor_Iron_Legs", 1),
-            new KitItem("Armor_Iron_Hands", 1)
+            new KitItem("Armor_Iron_Head", 1)
+            // new KitItem("Armor_Iron_Chest", 1),
+            // new KitItem("Armor_Iron_Legs", 1),
+            // new KitItem("Armor_Iron_Hands", 1)
         ));
 
         // Kit Mage
         kits.put("mage", List.of(
             new KitItem("Weapon_Staff_Wood", 1),
-            new KitItem("Armor_Cloth_Cindercloth_Head", 1),
-            new KitItem("Armor_Cloth_Cindercloth_Chest", 1),
-            new KitItem("Armor_Cloth_Cindercloth_Legs", 1),
-            new KitItem("Armor_Cloth_Cindercloth_Hands", 1)
+            new KitItem("Armor_Cloth_Cindercloth_Head", 1)
+            // new KitItem("Armor_Cloth_Cindercloth_Chest", 1),
+            // new KitItem("Armor_Cloth_Cindercloth_Legs", 1),
+            // new KitItem("Armor_Cloth_Cindercloth_Hands", 1)
+        ));
+
+        kits.put("assassin", List.of(
+            new KitItem("Weapon_Dagger_Steel", 1),
+            new KitItem("Armor_Leather_Head", 1)
+            // new KitItem("Armor_Leather_Chest", 1),
+            // new KitItem("Armor_Leather_Legs", 1),
+            // new KitItem("Armor_Leather_Hands", 1)
         ));
     }
 

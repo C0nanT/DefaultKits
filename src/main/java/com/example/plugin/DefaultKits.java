@@ -3,6 +3,7 @@ package com.example.plugin;
 import com.example.plugin.commands.KitCommand;
 import com.example.plugin.listeners.ArrowAmmoRewardListener;
 import com.example.plugin.listeners.ArrowDamageMultiplier;
+import com.example.plugin.listeners.ArrowRecoveryArchListener;
 import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -21,5 +22,6 @@ public class DefaultKits extends JavaPlugin {
         getCommandRegistry().registerCommand(new KitCommand());
         getEntityStoreRegistry().registerSystem(new ArrowDamageMultiplier());
         getEntityStoreRegistry().registerSystem(new ArrowAmmoRewardListener());
+        getEntityStoreRegistry().registerSystem(new ArrowRecoveryArchListener());
     }
 }
