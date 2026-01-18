@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
+
 import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +39,7 @@ public class KitCommand extends AbstractPlayerCommand {
         // Kit Archer
         kits.put("archer", List.of(
             new KitItem("Weapon_Shortbow_Crude", 1),
-            new KitItem("Weapon_Arrow_Crude", 64),
+            new KitItem("Weapon_Arrow_Crude", 20),
             new KitItem("Armor_Cloth_Linen_Head", 1),
             new KitItem("Armor_Cloth_Linen_Chest", 1),
             new KitItem("Armor_Cloth_Linen_Legs", 1),
@@ -74,22 +75,30 @@ public class KitCommand extends AbstractPlayerCommand {
 
         String kitName = kitArg.get(context).toLowerCase();
 
+        if(kitName.isEmpty()) {
+            context.sendMessage(MESSAGE_KIT_NOT_FOUND.param("kit", kitName));
+            return;
+        }
+
         List<KitItem> kitItems = kits.get(kitName);
         if (kitItems == null) {
             String available = String.join(", ", kits.keySet());
-            context.sendMessage(MESSAGE_KIT_NOT_FOUND.param("kit", kitName).param("available", available));
+
+            context.sendMessage(MESSAGE_KIT_NOT_FOUND.param("kit", kitName).param("available", available != null ? available : "nenhum"));
             return;
         }
 
         for (KitItem item : kitItems) {
-            player.getInventory().getCombinedHotbarFirst().addItemStack(
-                new ItemStack(item.getItemId(), item.getQuantity(), null)
-            );
+            String itemId = item.getItemId();
+            if (itemId != null) {
+                player.getInventory().getCombinedHotbarFirst().addItemStack(
+                    new ItemStack(itemId, item.getQuantity(), null)
+                );
+            }
         }
 
-        // Marca o jogador com o kit ativo (apenas archer por enquanto)
         if ("archer".equals(kitName)) {
-            KitManager.getInstance().setArcherKit(player);
+            KitManager.getInstance().setArcherKit(playerRef, true);
         }
 
         context.sendMessage(MESSAGE_KIT_RECEIVED.param("kit", kitName));

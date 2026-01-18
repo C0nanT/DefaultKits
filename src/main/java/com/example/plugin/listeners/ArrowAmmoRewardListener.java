@@ -3,6 +3,7 @@ package com.example.plugin.listeners;
 import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.SystemGroup;
 import com.hypixel.hytale.component.query.Query;
@@ -15,6 +16,7 @@ import com.hypixel.hytale.server.core.modules.entity.AllLegacyLivingEntityTypesQ
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageEventSystem;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageModule;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
@@ -67,8 +69,24 @@ public class ArrowAmmoRewardListener extends DamageEventSystem {
             return;
         }
 
+        // Obtém o Ref do shooter para pegar o PlayerRef
+        Ref<EntityStore> shooterRef = null;
+        if (damage.getSource() instanceof Damage.EntitySource) {
+            shooterRef = ((Damage.EntitySource) damage.getSource()).getRef();
+        }
+        
+        if (shooterRef == null || !shooterRef.isValid()) {
+            return;
+        }
+
+        // Obtém o PlayerRef do atirador
+        PlayerRef playerRef = commandBuffer.getComponent(shooterRef, PlayerRef.getComponentType());
+        if (playerRef == null) {
+            return;
+        }
+
         // Recompensa apenas se o jogador tiver kit archer ativo
-        if (!KitManager.getInstance().hasArcherKit(shooter)) {
+        if (!KitManager.getInstance().hasArcherKit(playerRef)) {
             return;
         }
 

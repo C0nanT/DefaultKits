@@ -3,14 +3,18 @@ package com.example.plugin.listeners;
 import com.example.plugin.kit.KitManager;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
+import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.SystemGroup;
 import com.hypixel.hytale.component.query.Query;
+import com.hypixel.hytale.server.core.entity.Entity;
+import com.hypixel.hytale.server.core.entity.EntityUtils;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.AllLegacyLivingEntityTypesQuery;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageEventSystem;
 import com.hypixel.hytale.server.core.modules.entity.damage.DamageModule;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
@@ -22,7 +26,7 @@ import javax.annotation.Nullable;
  */
 public class ArrowDamageMultiplier extends DamageEventSystem {
 
-    private static final boolean DEBUG_ENABLED = true; // Trocar para true para debug
+    private static final boolean DEBUG_ENABLED = false; // Trocar para true para debug
     
     // Multiplicador de dano: 2.0f = dano dobrado, 1.5f = 50% mais dano
     private static final float DAMAGE_MULTIPLIER = 2.0f;
@@ -65,8 +69,24 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
             return;
         }
 
+        // Obtém o Ref do shooter para pegar o PlayerRef
+        Ref<EntityStore> shooterRef = null;
+        if (damage.getSource() instanceof Damage.EntitySource) {
+            shooterRef = ((Damage.EntitySource) damage.getSource()).getRef();
+        }
+        
+        if (shooterRef == null || !shooterRef.isValid()) {
+            return;
+        }
+
+        // Obtém o PlayerRef do atirador
+        PlayerRef playerRef = commandBuffer.getComponent(shooterRef, PlayerRef.getComponentType());
+        if (playerRef == null) {
+            return;
+        }
+
         // Aplica apenas se o jogador tiver kit archer ativo
-        if (!KitManager.getInstance().hasArcherKit(shooter)) {
+        if (!KitManager.getInstance().hasArcherKit(playerRef)) {
             // Sem kit archer, dano normal
             return;
         }
