@@ -29,7 +29,7 @@ public class ArrowDamageMultiplier extends DamageEventSystem {
     private static final boolean DEBUG_ENABLED = false; // Trocar para true para debug
     
     // Multiplicador de dano: 2.0f = dano dobrado, 1.5f = 50% mais dano
-    private static final float DAMAGE_MULTIPLIER = 2.0f;
+    private static final float DAMAGE_MULTIPLIER = 1.5f;
 
     private void log(String message) {
         if (DEBUG_ENABLED) {
