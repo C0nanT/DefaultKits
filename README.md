@@ -28,8 +28,7 @@ Ative com o comando `/kit archer` para:
 
 ## Roadmap
 
-- Novos kits (warrior, mage)
-- Persistência de kits entre reinícios
+- Novos kits (warrior, mage, assassin, etc.)
 - Comando `/kit reset` para desativar kit
 
 ## Licença
