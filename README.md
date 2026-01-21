@@ -33,4 +33,4 @@ Ative com o comando `/kit archer` para:
 
 ## Licença
 
-MIT
+MIT.
